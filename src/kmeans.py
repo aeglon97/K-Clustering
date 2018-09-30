@@ -4,7 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from scipy.spatial import distance
-import plotly
 
 
 #Importing Dataset
@@ -34,24 +33,59 @@ def euclideanDistance(a,b):
 	right = (b[1] - a[1])**2
 	return math.sqrt(left + right)
 
-print(euclideanDistance(points[56], points[167]))
-	
-
-
-
-print(euclideanDistance(points[10], points[2]))
 # Accepts a list of data points D, and a list of centers
 # Returns a dictionary of lists called "clusters", such that
 # clusters[c] is a list of every data point in D that is closest
 #  to center c.
+k = 2
+centroids = []
+clusters = [[[]]]
+#initialize centroids randomly
+for i in range(k):
+	centroids.insert(i, points[i])
+	
+print(centroids)
+	
+def assignClusters(D, centroids):
+	for data_point in D:
+		distances = []
+		for center in centroids:
+			distances.append(euclideanDistance(data_point, center))		
+		min_value_index = distances.index(min(distances))
+		
+		clusters[i].append(data_point)
+		print(clusters)
+	
+assignClusters(points[10:30], centroids)
 
-#def assignClusters(D, centers):
-
+'''
+	create k number of empty lists in len(centers)
+	for every data_point in D
+		for every c in centers
+			get minimum euclideanDistance(data_point, c)
+			add data_point to list in clusters[c]
+			
+	add clusters[] to dictionary
+				
+'''
+	
+	#return clusters
 	
 # Accepts a list of data points.
 # Returns the mean of the points.
-##def findClusterMean(cluster):
-
+def findClusterMean(cluster):
+	sumX = 0
+	sumY = 0
+	for point in cluster:
+		sumX += point[0]
+		sumY += point[1]
+	
+	meanX = sumX/len(cluster)
+	meanY = sumY/len(cluster)
+	
+	return [[meanX, meanY]]
+	
+	
 # Accepts a list of data points, and a number of clusters.
 # Produces a set of lists representing a K-Means clustering
 #  of D.
@@ -68,6 +102,7 @@ print(euclideanDistance(points[10], points[2]))
 				clusters[nearest].append(point)
 			
 		
-	while means != oldMeans'''
+while means != oldMeans
+'''
 	
 
