@@ -9,7 +9,7 @@ import plotly
 
 #Importing Dataset
 
-dataset = pd.read_csv('../data/a2 data/movehubjoin.csv')
+dataset = pd.read_csv('../data/movehubjoin.csv')
 
 #dataset.plot()
 dataset.plot(kind='scatter', x='Purchase Power', y='Cappuccino')
@@ -21,7 +21,7 @@ Y = dataset.iloc[:,1]
 
 #Puts all datapoints in points[] array
 points = []
-for i in range(sum(1 for line in open('../data/a2 data/movehubjoin.csv'))):
+for i in range(sum(1 for line in open('../data/movehubjoin.csv'))):
 	if (i < X.size) and (i < Y.size):
 		point = [X[i], Y[i]]
 		points.append(point)	
