@@ -5,9 +5,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from scipy.spatial import distance
 
-
 #Importing Dataset
-
 dataset = pd.read_csv('../data/movehubjoin.csv')
 
 #dataset.plot()
@@ -39,37 +37,29 @@ def euclideanDistance(a,b):
 #  to center c.
 k = 2
 centroids = []
-clusters = [[[]]]
+
 #initialize centroids randomly
 for i in range(k):
 	centroids.insert(i, points[i])
 	
+	
 print(centroids)
 	
-def assignClusters(D, centroids):
+def assignClusters(D, centers):
+	clusters = {}
 	for data_point in D:
 		distances = []
 		for center in centroids:
-			distances.append(euclideanDistance(data_point, center))		
-		min_value_index = distances.index(min(distances))
+			#Find minimum euclidean distance from current data_point to each center
+			distances.append(euclideanDistance(data_point, center))
 		
-		clusters[i].append(data_point)
-		print(clusters)
+		
+		min_distance = min(distances)
+		min_index = distances.index(min(distances))
+		clusters.setdefault(min_index, []).append(min_distance)
+	return clusters
 	
-assignClusters(points[10:30], centroids)
-
-'''
-	create k number of empty lists in len(centers)
-	for every data_point in D
-		for every c in centers
-			get minimum euclideanDistance(data_point, c)
-			add data_point to list in clusters[c]
-			
-	add clusters[] to dictionary
-				
-'''
-	
-	#return clusters
+print(assignClusters(points, centroids))
 	
 # Accepts a list of data points.
 # Returns the mean of the points.
@@ -89,7 +79,7 @@ def findClusterMean(cluster):
 # Accepts a list of data points, and a number of clusters.
 # Produces a set of lists representing a K-Means clustering
 #  of D.
-'''def KMeans(D, k):
+def KMeans(D, k):
 	means = D[1:k]
 	do:
 		oldMeans = means
@@ -103,6 +93,5 @@ def findClusterMean(cluster):
 			
 		
 while means != oldMeans
-'''
 	
 
