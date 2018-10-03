@@ -2,14 +2,18 @@
 import math #sqrt
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
 import pandas as pd
 from scipy.spatial import distance
+
+x = np.arange(10)
+ys = [i+x+(i*x)**2 for i in range(10)]
 
 #Importing Dataset
 dataset = pd.read_csv('../data/movehubjoin.csv')
 
 #dataset.plot()
-dataset.plot(kind='scatter', x='Purchase Power', y='Cappuccino')
+#dataset.plot(kind='scatter', x='Purchase Power', y='Cappuccino')
 
 #Purchase Power
 X = dataset.iloc[:,8]
@@ -54,28 +58,78 @@ def assignClusters(D, centers):
 		clusters.setdefault(min_index, []).append(data_point)
 	return clusters
 	
-print(assignClusters(points[10:30], centroids))
+#print(assignClusters(points[10:30], centroids))
+
+clusters = assignClusters(points[10:30], centroids)	
+colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w']
+
+usedColors = []
+
+#Visualization
+for cluster in clusters:
+	i = 0
+	color = colors[i]
+	currentCluster = 0
+	
+	if (currentCluster != cluster):
+		currentCluster +=1
+		i+=1
+		color = colors[i]
+	
+	for point in clusters[cluster]:
+		plt.scatter(point[0], point[1], color=color)
 	
 # Accepts a list of data points.
 # Returns the mean of the points.
 def findClusterMean(cluster):
 	sumX = 0
 	sumY = 0
+	
 	for point in cluster:
 		sumX += point[0]
 		sumY += point[1]
 	
+	print('cluster size: ' , len(cluster))
 	meanX = sumX/len(cluster)
 	meanY = sumY/len(cluster)
 	
-	return [[meanX, meanY]]
+	return [meanX, meanY]
+
+myCluster = clusters[1]
+meanPoint = findClusterMean(myCluster)
+plt.scatter(meanPoint[0], meanPoint[1], color='red')
+
+#myCluster = clusters[0]
+#print(myCluster)
+#findClusterMean(myCluster)
+
+
+#myCluster = clusters[0]
+#print('mean point: ' , findClusterMean(myCluster))
+
+'''for cluster in clusters.values():
+	
+	findClusterMean(cluster)'''
 	
 	
 # Accepts a list of data points, and a number of clusters.
 # Produces a set of lists representing a K-Means clustering
 #  of D.
-'''def KMeans(D, k):
+def KMeans(D, k):
 	means = D[1:k]
+	print(means)
+	
+	
+#KMeans(points[10:30], 2)
+	
+	
+	
+	
+	
+	
+	
+	
+'''means = D[1:k]
 	do:
 		oldMeans = means
 		clusters = []
