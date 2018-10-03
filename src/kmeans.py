@@ -42,9 +42,6 @@ centroids = []
 for i in range(k):
 	centroids.insert(i, points[i])
 	
-	
-print(centroids)
-	
 def assignClusters(D, centers):
 	clusters = {}
 	for data_point in D:
@@ -52,14 +49,12 @@ def assignClusters(D, centers):
 		for center in centroids:
 			#Find minimum euclidean distance from current data_point to each center
 			distances.append(euclideanDistance(data_point, center))
-		
-		
-		min_distance = min(distances)
+
 		min_index = distances.index(min(distances))
-		clusters.setdefault(min_index, []).append(min_distance)
+		clusters.setdefault(min_index, []).append(data_point)
 	return clusters
 	
-print(assignClusters(points, centroids))
+print(assignClusters(points[10:30], centroids))
 	
 # Accepts a list of data points.
 # Returns the mean of the points.
@@ -79,7 +74,7 @@ def findClusterMean(cluster):
 # Accepts a list of data points, and a number of clusters.
 # Produces a set of lists representing a K-Means clustering
 #  of D.
-def KMeans(D, k):
+'''def KMeans(D, k):
 	means = D[1:k]
 	do:
 		oldMeans = means
@@ -92,6 +87,6 @@ def KMeans(D, k):
 				clusters[nearest].append(point)
 			
 		
-while means != oldMeans
+while means != oldMeans'''
 	
 
