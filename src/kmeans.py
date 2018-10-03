@@ -1,24 +1,20 @@
 #A template for the implementation of K-Means.
 import math #sqrt
-import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.cm as cm
 import pandas as pd
-from scipy.spatial import distance
-
-x = np.arange(10)
-ys = [i+x+(i*x)**2 for i in range(10)]
+import numpy as np
+import random
 
 #Importing Dataset
 dataset = pd.read_csv('../data/movehubjoin.csv')
 
-#dataset.plot()
-#dataset.plot(kind='scatter', x='Purchase Power', y='Cappuccino')
 
 #Purchase Power
 X = dataset.iloc[:,8]
+rand_x = random.uniform(1, np.max(X)-10)
 #Cappuccino
 Y = dataset.iloc[:,1]
+rand_y = random.uniform(1, np.max(Y))
 
 #Puts all datapoints in points[] array
 points = []
@@ -39,46 +35,19 @@ def euclideanDistance(a,b):
 # Returns a dictionary of lists called "clusters", such that
 # clusters[c] is a list of every data point in D that is closest
 #  to center c.
-k = 2
-centroids = []
-
-#initialize centroids randomly
-for i in range(k):
-	centroids.insert(i, points[i])
 	
 def assignClusters(D, centers):
 	clusters = {}
 	for data_point in D:
 		distances = []
-		for center in centroids:
+		for center in centers:
 			#Find minimum euclidean distance from current data_point to each center
 			distances.append(euclideanDistance(data_point, center))
 
 		min_index = distances.index(min(distances))
 		clusters.setdefault(min_index, []).append(data_point)
 	return clusters
-	
-#print(assignClusters(points[10:30], centroids))
 
-clusters = assignClusters(points[10:30], centroids)	
-colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w']
-
-usedColors = []
-
-#Visualization
-for cluster in clusters:
-	i = 0
-	color = colors[i]
-	currentCluster = 0
-	
-	if (currentCluster != cluster):
-		currentCluster +=1
-		i+=1
-		color = colors[i]
-	
-	for point in clusters[cluster]:
-		plt.scatter(point[0], point[1], color=color)
-	
 # Accepts a list of data points.
 # Returns the mean of the points.
 def findClusterMean(cluster):
@@ -89,45 +58,90 @@ def findClusterMean(cluster):
 		sumX += point[0]
 		sumY += point[1]
 	
-	print('cluster size: ' , len(cluster))
 	meanX = sumX/len(cluster)
 	meanY = sumY/len(cluster)
 	
-	return [meanX, meanY]
-
-myCluster = clusters[1]
-meanPoint = findClusterMean(myCluster)
-plt.scatter(meanPoint[0], meanPoint[1], color='red')
-
-#myCluster = clusters[0]
-#print(myCluster)
-#findClusterMean(myCluster)
-
-
-#myCluster = clusters[0]
-#print('mean point: ' , findClusterMean(myCluster))
-
-'''for cluster in clusters.values():
-	
-	findClusterMean(cluster)'''
-	
+	return [meanX, meanY]	
 	
 # Accepts a list of data points, and a number of clusters.
 # Produces a set of lists representing a K-Means clustering
 #  of D.
 def KMeans(D, k):
-	means = D[1:k]
-	print(means)
+	print('-----------')
+	
+	#generate k number of centroids
+	centroids = []
+	for i in range(k):
+		#centroids.insert(i, [random.uniform(1, rand_x), random.uniform(1, rand_y)])
+		
+		centroids.insert(i, points[i])
 	
 	
-#KMeans(points[10:30], 2)
+	print('Centroids: ', centroids)
+	
+	#assign clusters to centroids
+	clusters = assignClusters(D, centroids)
+	for cluster in clusters:
+		print('Cluster ' , cluster , ' size: ', len(clusters[cluster]))
+	#print(clusters)
+	colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w']
+	
+	#readjust centroids according to mean
+	for i in range(k):
+		new_c = findClusterMean(clusters[i])
+		centroids[i] = new_c
+	print("New centroids: ", centroids)
+	
+	#reassign data points
+	clusters = assignClusters(D, centroids)
+	for cluster in clusters:
+		print('Cluster ' , cluster , ' size: ', len(clusters[cluster]))
+		
+	
+	#print('Means: ' , means)
+	
+	'''print(means)
+	while means != oldMeans:
+		print("---------------")
+		oldMeans = means
+		print('old means: ', oldMeans, '\t' , 'means: ', means)
+		clusters = {}
+		for point in D:
+			nearest = means[0]
+			for m in means:
+				if euclideanDistance(point, m) < euclideanDistance(nearest, point):
+					nearest = m
+					clusters[nearest].append(point) '''
+	
+	
+	#print(clusters)
+	
+	
+	
+	#Visualization
+	for cluster in clusters:
+		i = 0
+		color = colors[i]
+		currentCluster = 0
+		
+		if (currentCluster != cluster):
+			currentCluster +=1
+			i+=1
+			color = colors[i]
+		
+		for point in clusters[cluster]:
+			plt.scatter(point[0], point[1], color=color)
+	
+	#print(clusters)
+	
+	myCluster = clusters[1]
+	meanPoint = findClusterMean(myCluster)
+	plt.scatter(meanPoint[0], meanPoint[1], color='red')
 	
 	
 	
 	
-	
-	
-	
+KMeans(points[10:30], 2)
 	
 '''means = D[1:k]
 	do:
