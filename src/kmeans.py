@@ -8,15 +8,13 @@ import random
 #Importing Dataset
 dataset = pd.read_csv('../data/movehubjoin.csv')
 
-
-#Purchase Power
+#Purchase Power -- X-axis
 X = dataset.iloc[:,8]
-rand_x = random.uniform(1, np.max(X)-10)
-#Cappuccino
+#Cappuccino 	   -- Y-axis
 Y = dataset.iloc[:,1]
-rand_y = random.uniform(1, np.max(Y))
 
 #Puts all datapoints in points[] array
+#Each x- and y-coordinate stored in an array [x, y]
 points = []
 for i in range(sum(1 for line in open('../data/movehubjoin.csv'))):
 	if (i < X.size) and (i < Y.size):
@@ -67,84 +65,55 @@ def findClusterMean(cluster):
 # Produces a set of lists representing a K-Means clustering
 #  of D.
 def KMeans(D, k):
-	print('-----------')
-	means = []
+	#initialize means and oldMeans to size k
+	means = D[0:k]
 	oldMeans = [None] * k
-	
+
 	#generate k number of centroids
+	#random x- and y-coordinate initially assigned to centroids
 	centroids = []
 	for i in range(k):
-		#centroids.insert(i, [random.uniform(1, rand_x), random.uniform(1, rand_y)])
-		
-		centroids.insert(i, points[i])
-	
-	
-	print('Centroids: ', centroids)
-	
-	#assign clusters to centroids
-	clusters = assignClusters(D, centroids)
-	for cluster in clusters:
-		print('Cluster ' , cluster , ' size: ', len(clusters[cluster]))
-	#print(clusters)
-	
-	
-	
-	for i in range(k):
-		meanPoint = findClusterMean(clusters[i])
-		means.append(meanPoint)
-	
-	print("Means: " , means)
-	
+		randX = random.uniform(1, np.max(X))
+		randY = random.uniform(1, np.max(Y))
+		centroids.insert(i, [randX, randY])
+	print('centroids: ' , centroids)
+
+	#iterate until the values of the means stop changing (stabilizes)
 	while means != oldMeans:
-		print('--------------')
-		#readjust centroids according to mean
-		for i in range(k):
-			new_c = findClusterMean(clusters[i])
-			centroids[i] = new_c
-			
-		print("New centroids: ", centroids)
+		#assign clusters to centroids
+		clusters = assignClusters(D, centroids)	
 		
-		#reassign data points
-		clusters = assignClusters(D, centroids)
-		for cluster in clusters:
-			print('Cluster ' , cluster , ' size: ', len(clusters[cluster]))
-		
+		#find mean point of each cluster
+		#reassign oldMeans before assigning new means
 		for i in range(k):
 			oldMeans[i] = means[i]
 			meanPoint = findClusterMean(clusters[i])
-			means[i] = (meanPoint)
+			means[i] = meanPoint
 		
-		print(oldMeans)
-		print('New means: ' , means)
-	
-	
+			#readjust centroids according to mean
+			newCentroid = findClusterMean(clusters[i])
+			centroids[i] = newCentroid		
+			
+		print('Old means: ', oldMeans)
+		print('Means: ' , means)
+		print("New centroids: ", centroids)
+		
+	#Visualization
 	colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w']
 	i = 0
 	
-	for cluster in clusters.values():
-		for point in cluster:
+	#Assign different colors to each cluster
+	for cluster in myMeans.values():
+		for point in cluster:	
 			plt.scatter(point[0], point[1], color=colors[i])
-		
 		i+=1
-	
-	
-	#Visualization
-	'''for cluster in clusters:
-		color = colors[i]
-		print(color)
-		if (currentCluster != cluster):
-			currentCluster +=1
-			print('current cluster: ' , currentCluster)
-			i+=1
-			color = colors[i]
+	return clusters	
 		
-		for point in clusters[cluster]:
-			print('color: ' , color)
-			plt.scatter(point[0], point[1], color=color)'''
+#returns a dictionary with each key i being the ith cluster
+#values mapped to each key i being the list of data points in cluster i
+myMeans = KMeans(points, 3)
 	
-	
-	
-	
-KMeans(points, 3)
+
+
 	
 
