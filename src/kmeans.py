@@ -33,17 +33,20 @@ def euclideanDistance(a,b):
 # Returns a dictionary of lists called "clusters", such that
 # clusters[c] is a list of every data point in D that is closest
 #  to center c.
-	
 def assignClusters(D, centers):
 	clusters = {}
 	for data_point in D:
 		distances = []
+		#compare each data point to all 3 centroids stored in an array distances[]
 		for center in centers:
-			#Find minimum euclidean distance from current data_point to each center
 			distances.append(euclideanDistance(data_point, center))
 
+		#find the minimum distance and keep track of its index
 		min_index = distances.index(min(distances))
+		
+		#index i of minimum distance = ith cluster in clusters[i]
 		clusters.setdefault(min_index, []).append(data_point)
+		
 	return clusters
 
 # Accepts a list of data points.
@@ -60,6 +63,17 @@ def findClusterMean(cluster):
 	meanY = sumY/len(cluster)
 	
 	return [meanX, meanY]	
+
+#Visualization of KMeans
+def visualize(clusters):
+	colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w']
+	i = 0
+	
+	#Assign different colors to each cluster
+	for cluster in clusters.values():
+		for point in cluster:	
+			plt.scatter(point[0], point[1], color=colors[i])
+		i+=1
 	
 # Accepts a list of data points, and a number of clusters.
 # Produces a set of lists representing a K-Means clustering
@@ -98,21 +112,16 @@ def KMeans(D, k):
 		print('Means: ' , means)
 		print("New centroids: ", centroids)
 		
-	#Visualization
-	colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w']
-	i = 0
+	return clusters
+
+#KMeans() returns a dictionary with each key k being the kth cluster
+#values mapped to each kth cluster being the list of data points in cluster k
+def main():
+	myKMeans = KMeans(points, 3)
+	visualize(myKMeans)
 	
-	#Assign different colors to each cluster
-	for cluster in myMeans.values():
-		for point in cluster:	
-			plt.scatter(point[0], point[1], color=colors[i])
-		i+=1
-	return clusters	
-		
-#returns a dictionary with each key i being the ith cluster
-#values mapped to each key i being the list of data points in cluster i
-myMeans = KMeans(points, 3)
-	
+if __name__ == '__main__':	
+	main()
 
 
 	
