@@ -115,7 +115,7 @@ def KMeans(D, k):
 #KMeans() returns a dictionary with each key k being the kth cluster
 #values mapped to each kth cluster being the list of data points in cluster k
 def main():
-	myKMeans = KMeans(points, 3)
+	myKMeans = KMeans(points, 2)
 	visualize(myKMeans)
 	
 if __name__ == '__main__':	
