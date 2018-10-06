@@ -2,8 +2,6 @@
 import math #sqrt
 import matplotlib.pyplot as plt
 import pandas as pd
-import numpy as np
-import random
 
 #Importing Dataset
 dataset = pd.read_csv('../data/movehubjoin.csv')
@@ -35,17 +33,17 @@ def euclideanDistance(a,b):
 #  to center c.
 def assignClusters(D, centers):
 	clusters = {}
-	for data_point in D:
+	for dataPoint in D:
 		distances = []
 		#compare each data point to all 3 centroids stored in an array distances[]
 		for center in centers:
-			distances.append(euclideanDistance(data_point, center))
+			distances.append(euclideanDistance(dataPoint, center))
 
 		#find the minimum distance and keep track of its index
-		min_index = distances.index(min(distances))
-		
+		minIndex = distances.index(min(distances))
+
 		#index i of minimum distance = ith cluster in clusters[i]
-		clusters.setdefault(min_index, []).append(data_point)
+		clusters.setdefault(minIndex, []).append(dataPoint)
 		
 	return clusters
 
@@ -84,13 +82,11 @@ def KMeans(D, k):
 	oldMeans = [None] * k
 
 	#generate k number of centroids
-	#random x- and y-coordinate initially assigned to centroids
+	#initialize centroids with first k amount of points in D
 	centroids = []
 	for i in range(k):
-		randX = random.uniform(1, np.max(X))
-		randY = random.uniform(1, np.max(Y))
-		centroids.insert(i, [randX, randY])
-	print('centroids: ' , centroids)
+		centroids.insert(i, points[i])
+	#print('centroids: ' , centroids)
 
 	#iterate until the values of the means stop changing (stabilizes)
 	while means != oldMeans:
@@ -108,10 +104,12 @@ def KMeans(D, k):
 			newCentroid = findClusterMean(clusters[i])
 			centroids[i] = newCentroid		
 			
-		print('Old means: ', oldMeans)
-		print('Means: ' , means)
-		print("New centroids: ", centroids)
-		
+		#Uncomment below for troubleshooting
+		'''
+			print('Old means: ', oldMeans)
+			print('Means: ' , means)
+			print("New centroids: ", centroids)
+		'''		
 	return clusters
 
 #KMeans() returns a dictionary with each key k being the kth cluster
@@ -122,7 +120,3 @@ def main():
 	
 if __name__ == '__main__':	
 	main()
-
-
-	
-
