@@ -80,16 +80,16 @@ def KMedoids(D, k):
         oldCenters = centers
         clusters = assignClusters(D, centers)
         
-        for c in centers:
-            for cand in clusters[centers.index(c)]:
+        for center in centers:
+            for cand in clusters[centers.index(center)]:
                 dist_c = 0
                 dist_cand = 0
-                for point in clusters[centers.index(c)]:
-                    dist_c += Distance(c, point)
+                for point in clusters[centers.index(center)]:
+                    dist_c += Distance(center, point)
                     dist_cand += Distance(cand, point)
                     
                 if dist_cand < dist_c:
-                    c = cand
+                    center = cand
                     
                 return clusters
 
