@@ -6,7 +6,9 @@ import math #sqrt
 # Returns the distance between a and b.
 # Note that this might be specific to your data.
 def Distance(a,b):
-
+	
+	
+	
 
 # Accepts a list of data points D, and a list of centers
 # Returns a dictionary of lists called "clusters", such that
@@ -14,6 +16,20 @@ def Distance(a,b):
 #  to center c.
 # Note: This can be identical to the K-Means function of the same name.
 def assignClusters(D, centers):
+	clusters = {}
+	for data_point in D:
+		distances = []
+		#compare each data point to all 3 centroids stored in an array distances[]
+		for center in centers:
+			distances.append(euclideanDistance(data_point, center))
+
+		#find the minimum distance and keep track of its index
+		min_index = distances.index(min(distances))
+		
+		#index i of minimum distance = ith cluster in clusters[i]
+		clusters.setdefault(min_index, []).append(data_point)
+		
+	return clusters
 
 # Accepts a list of data points.
 # Returns the medoid of the points.
