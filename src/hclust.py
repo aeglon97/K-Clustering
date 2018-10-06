@@ -39,7 +39,6 @@ def visualize(points):
                 show_leaf_counts=True)
     plt.show() 
 
-
 # Accepts two data points a and b.
 # Returns the distance between a and b.
 # Note that this might be specific to your data.
@@ -56,9 +55,7 @@ def merge(a,b):
 def findClosestPair(D):
     if (len(D) <= 1):
         return D
-
-        
-                    
+                
 # Accepts a list of data points.
 # Produces a tree structure corresponding to a
 # Agglomerative Hierarchal clustering of D.
@@ -66,34 +63,36 @@ def HClust(D):
     centers = D[10:15]
     splits = [None] * len(centers)
     
-    while (len(centers) > 0):
+    print('centers: ', centers)
+    
+    while (len(centers) > 1):
         minDistance = Distance(centers[0],centers[1])
         location = [centers[0], centers[1]]
         
         for c in range(len(centers)):
+            print('----------------------------------------------------------------')
+            print('current center: ', centers[c])
             for d in (centers[:c]+centers[c+1:]):
-                print('-------------------------------')
-                print(d)
-                minDistance = Distance(centers[c], d)
-                location = [centers[c],d]    
-                print('location:' , location)
-        
-        print(centers)
+                print('============================')
+                print('current d: ', d)
+                if (Distance(centers[c],d) < minDistance):
+                    minDistance = Distance(centers[c], d)
+                    print('minDistance between ' , centers[c], 
+                         ' and ' , d , ': ' , minDistance)
+                    #store the current center AND nearest point as a pair
+                    location = [centers[c],d]    
+                    print('location:' , location)
+                    
+            centers[c]= merge(location[0],location[1])
+            splits[c] = location
         centers.remove(location[1])
-        print(centers)
-        
-        #print('centers[c]: ' , centers[c])
-        print(merge(location[0], location[1]))
-        #centers[c] = merge(location[0], location[1])
-        
-        #splits[centers[c]] = location
-       
-    return centers
-        
-        
+         
+    return splits
+                
 def main():
     myPoints = HClust(points)
-    visualize(myPoints)
+    print(myPoints)
+    visualize(points)
     
 if __name__ == '__main__':
     main()
