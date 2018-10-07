@@ -8,8 +8,6 @@ import pandas as pd
 #Importing Dataset
 dataset = pd.read_csv('../data/movehubjoin.csv')
 
-#dataset.plot(kind='scatter', x='Purchase Power', y='Cappuccino')
-
 #Purchase Power
 X = dataset.iloc[:,8]
 #Cappuccino
@@ -21,16 +19,12 @@ for i in range(sum(1 for line in open('../data/movehubjoin.csv'))):
     if (i < X.size) and (i < Y.size):
         point = [X[i], Y[i]]
         points.append(point)   
-    
-#converts points array 
 
 #draws dendogram visualization of all points
 def visualize(points):
     numPyPoints = np.array(points[10:50])
     #DENDOGRAM
     linked = linkage(numPyPoints, 'single')
-    
-    #labelList = range(1, 5) 
     plt.figure(figsize=(10, 7)) 
     dendrogram(linked,  
                 orientation='top',
@@ -53,46 +47,48 @@ def merge(a,b):
 # Accepts a list of data points.
 # Returns the pair of points that are closest
 def findClosestPair(D):
-    if (len(D) <= 1):
+    if (len(D) <= 2):
         return D
+    
+    closestPair = [None] * 2
+    minDistance = Distance(D[0], D[1])
+    
+    for dataPoint in D:
+        c = D.index(dataPoint)
+        for otherPoint in (D[:c]+D[c+1:]):
+            if (Distance(dataPoint, otherPoint) < minDistance):
+                minDistance = Distance(dataPoint, otherPoint)
+                closestPair = [dataPoint, otherPoint]
                 
+    return closestPair
+
 # Accepts a list of data points.
 # Produces a tree structure corresponding to a
 # Agglomerative Hierarchal clustering of D.
 def HClust(D):
     centers = D[10:15]
-    splits = [None] * len(centers)
-    
-    print('centers: ', centers)
+    splits = {}
     
     while (len(centers) > 1):
-        minDistance = Distance(centers[0],centers[1])
-        location = [centers[0], centers[1]]
+        # find closest pair [x, y] in D
+        closestPair = findClosestPair(centers)
         
-        for c in range(len(centers)):
-            print('----------------------------------------------------------------')
-            print('current center: ', centers[c])
-            for d in (centers[:c]+centers[c+1:]):
-                print('============================')
-                print('current d: ', d)
-                if (Distance(centers[c],d) < minDistance):
-                    minDistance = Distance(centers[c], d)
-                    print('minDistance between ' , centers[c], 
-                         ' and ' , d , ': ' , minDistance)
-                    #store the current center AND nearest point as a pair
-                    location = [centers[c],d]    
-                    print('location:' , location)
-                    
-            centers[c]= merge(location[0],location[1])
-            splits[c] = location
-        centers.remove(location[1])
-         
-    return splits
+        # remove y from centers
+        centers.remove(closestPair[1])
+        
+        #replace centers[x] with merge(x, y)
+        for i in range(len(centers)):
+            if centers[i] == closestPair[0]:
+                centers[i] = merge(closestPair[0], closestPair[1])
+        
+                #key i in splits{} is the ith depth of tree
+                splits.setdefault(i, []).append(closestPair)
+                print(splits)
                 
 def main():
     myPoints = HClust(points)
     print(myPoints)
-    visualize(points)
+    visualize(points[10:15])
     
 if __name__ == '__main__':
     main()
