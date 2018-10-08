@@ -92,10 +92,10 @@ def KMeans(D, k):
 	while means != oldMeans:
 		#assign clusters to centroids
 		clusters = assignClusters(D, centroids)	
-		
-		#find mean point of each cluster
-		#reassign oldMeans before assigning new means
+
 		for i in range(k):
+         #find mean point of each cluster
+    		#reassign oldMeans before assigning new means
 			oldMeans[i] = means[i]
 			meanPoint = findClusterMean(clusters[i])
 			means[i] = meanPoint

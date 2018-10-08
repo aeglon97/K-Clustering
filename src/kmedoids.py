@@ -48,50 +48,43 @@ def assignClusters(D, medoids):
 
 # Accepts a list of data points.
 # Returns the medoid of the points.
-def findClusterMedoid(centers, clusters):
-    
-     for c in centers:
-            for cand in clusters[centers.index(c)]:
-                dist_c = 0
-                dist_cand = 0
-                for point in clusters[centers.index(c)]:
-                    dist_c += Distance(c, point)
-                    dist_cand += Distance(cand, point)
-                    
-                if dist_cand < dist_c:
-                    c = cand
-                    
-                return clusters
-    
+def findClusterMedoid(cluster):
+    minDistance = 100
+    for point in cluster:
+        for comparePoint in cluster:
+            
+            if Distance(point, comparePoint) < minDistance:
+                minDistance = Distance(point,comparePoint)
+                medoid = point
+                
+    return medoid
     
 # Accepts a list of data points, and a number of clusters.
 # Produces a set of lists representing a K-Medoids clustering
 #  of D.
 def KMedoids(D, k):
-    centers = D[0:k]
-    oldCenters = [None] * k
-    #initialize means and oldMeans to size k
-    #medoids = D[0:k]oldMedoids = [None] * k
-
-    #generate k number of centroids
+    #initialize medoids and oldMedoidss to size k
+    medoids = D[0:k]
+    oldMedoids = [None] * k
+ 
     #initialize centroids with first k amount of points in D
+    centroids = D[0:k]
         
-    while centers != oldCenters:
-        oldCenters = centers
-        clusters = assignClusters(D, centers)
+    while medoids != oldMedoids:
+        clusters = assignClusters(D, centroids)
         
-        for c in centers:
-            for cand in clusters[centers.index(c)]:
-                dist_c = 0
-                dist_cand = 0
-                for point in clusters[centers.index(c)]:
-                    dist_c += Distance(c, point)
-                    dist_cand += Distance(cand, point)
-                    
-                if dist_cand < dist_c:
-                    c = cand
-                    
-                return clusters
+        for i in range(k):
+            #find mean point of each cluster
+            #reassign oldMedoids before assigning new means
+            oldMedoids[i] = medoids[i]
+            medoid = findClusterMedoid(clusters[i])
+            medoids[i] = medoid
+            
+            #readjust data points according to means
+            newCentroid = findClusterMedoid(clusters[i])
+            centroids[i] = newCentroid	
+            
+    return clusters
 
 def visualize(clusters):
 	colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w']

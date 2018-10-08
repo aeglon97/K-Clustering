@@ -22,6 +22,7 @@ for i in range(sum(1 for line in open('../data/movehubjoin.csv'))):
 
 #draws dendogram visualization of all points
 def visualize(points):
+    #turn regular array into numPy array
     numPyPoints = np.array(points)
     #DENDOGRAM
     linked = linkage(numPyPoints, 'single')
@@ -73,7 +74,8 @@ def HClust(D):
         # find closest pair [x, y] in D
         closestPair = findClosestPair(centers)
         
-        #indexes i and (i+1)%2==1 in splits[] is the ith depth of dendogram
+        #indexes i and (i+1)%2==1 in splits[] is the ith depth of dendogram 
+        #containing ith coordinates of closestPair
         #append closestPair according to ith depth of dendogram
         splits.append(closestPair[0])
         splits.append(closestPair[1])
@@ -95,6 +97,7 @@ def HClust(D):
     return dendoGram
                
 def main():
+    #create dendogram variable, then invoke matplotlib function show() on it
     myPlot = HClust(points)
     myPlot.show()
     
