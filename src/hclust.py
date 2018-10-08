@@ -93,53 +93,7 @@ def HClust(D):
     
     dendoGram = visualize(splits)
     return dendoGram
-    
-'''def HClust(D):
-    centers = D[10:15]
-    
-    #there will be n-1 splits for size of list n, so total number of "splits"
-    #in the dendogram will be n-1
-    splits = []
-    
-        while (len(centers) > 1):
-        print('--------------------')
-        print('len(centers): ' , len(centers))
-        print('centers: ', centers)
-        
-        # find closest pair [x, y] in D
-        closestPair = findClosestPair(centers)
-        #print('closest pair of points: ' , closestPair)
-        
-        splits.append(closestPair[0])
-        splits.append(closestPair[1])
-        print(splits)
-        
-        index = 0
-        
-        while index < len(centers):
-            if centers[index] == closestPair[0]:
-                #replace the element containing closestPair[x] in centers with the
-                #mean point between the closestPair of points
-                #print(closestPair)
-                centers[index] = merge(closestPair[0], closestPair[1])
-            elif centers[index] == closestPair[1]:
-                # remove y-coordinate of closestPair from centers
-                centers.remove(centers[index])
-                #print('centers after removing closest pair[y]: ', centers)
-                
-            index += 1
-            
-    
-    
-    
-    print(splits)      
-    #visualize(splits)
-    #return splits
-                    
-        #key i in splits{} is the ith depth of tree
-        #append closestPair according to ith iteration'''
                
-                
 def main():
     myPlot = HClust(points)
     myPlot.show()
