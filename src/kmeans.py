@@ -75,6 +75,8 @@ def visualize(clusters):
 	
     plt.xlabel('Purchase Power')
     plt.ylabel('Cappuccino')
+    plt.savefig('../visualizations/kmeans.png')
+    plt.show()
     
 # Accepts a list of data points, and a number of clusters.
 # Produces a set of lists representing a K-Means clustering

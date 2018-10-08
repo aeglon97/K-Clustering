@@ -34,6 +34,7 @@ def visualize(points):
                 show_leaf_counts=True)
     plt.xlabel('Purchase Power')
     plt.ylabel('Cappuccino')
+    plt.savefig('../visualizations/hclust.png')
     return plt
 
 # Accepts two data points a and b.

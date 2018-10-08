@@ -100,13 +100,19 @@ def visualize(clusters):
         for point in cluster:
             plt.scatter(point[0], point[1], color = colors[i])
         i +=1 
+        
+    #label axes
     plt.xlabel('Purchase Power')
     plt.ylabel('Cappuccino')
+    #save visualization to a .png file
+    plt.savefig('../visualizations/kmedoids.png')
+    plt.show()
    
 def main():
     myMedoids = KMedoids(points, 2)
     visualize(myMedoids)
-
+    
+    
 if __name__ == '__main__':
     main()
     
