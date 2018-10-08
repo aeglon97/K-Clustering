@@ -32,6 +32,8 @@ def visualize(points):
                 #labels=labelList,
                 distance_sort='descending',
                 show_leaf_counts=True)
+    plt.xlabel('Purchase Power')
+    plt.ylabel('Cappuccino')
     return plt
 
 # Accepts two data points a and b.

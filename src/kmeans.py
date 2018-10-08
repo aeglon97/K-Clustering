@@ -64,15 +64,18 @@ def findClusterMean(cluster):
 
 #Visualization of KMeans
 def visualize(clusters):
-	colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w']
-	i = 0
+    colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w']
+    i = 0
+    
+    #Assign different colors to each cluster
+    for cluster in clusters.values():
+        for point in cluster:
+            plt.scatter(point[0], point[1], color = colors[i])
+        i += 1
 	
-	#Assign different colors to each cluster
-	for cluster in clusters.values():
-		for point in cluster:	
-			plt.scatter(point[0], point[1], color=colors[i])
-		i+=1
-	
+    plt.xlabel('Purchase Power')
+    plt.ylabel('Cappuccino')
+    
 # Accepts a list of data points, and a number of clusters.
 # Produces a set of lists representing a K-Means clustering
 #  of D.

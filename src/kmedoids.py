@@ -84,18 +84,25 @@ def KMedoids(D, k):
             newCentroid = findClusterMedoid(clusters[i])
             centroids[i] = newCentroid	
             
+            '''Uncomment below for troubleshooting
+            print('Old medoids: ', oldMedoids)
+            print('medoids: ', medoids)
+            print('new centroids: ', centroids)
+            '''
+		      
     return clusters
 
 def visualize(clusters):
-	colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w']
-	i = 0
-	
-	#Assign different colors to each cluster
-	for cluster in clusters.values():
-		for point in cluster:	
-			plt.scatter(point[0], point[1], color=colors[i])
-		i+=1
-
+    colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w']
+    i = 0
+    
+    for cluster in clusters.values():
+        for point in cluster:
+            plt.scatter(point[0], point[1], color = colors[i])
+        i +=1 
+    plt.xlabel('Purchase Power')
+    plt.ylabel('Cappuccino')
+   
 def main():
     myMedoids = KMedoids(points, 2)
     visualize(myMedoids)
