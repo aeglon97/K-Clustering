@@ -72,6 +72,14 @@ def visualize(clusters):
         for point in cluster:
             plt.scatter(point[0], point[1], color = colors[i])
         i += 1
+	colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w']
+	i = 0
+	
+	#Assign different colors to each cluster
+	for cluster in clusters.values():
+		for point in cluster:	
+			plt.scatter(point[0], point[1], color=colors[i])
+		i+=1
 	
     plt.xlabel('Purchase Power')
     plt.ylabel('Cappuccino')
@@ -97,10 +105,10 @@ def KMeans(D, k):
 	while means != oldMeans:
 		#assign clusters to centroids
 		clusters = assignClusters(D, centroids)	
-
+		
+		#find mean point of each cluster
+		#reassign oldMeans before assigning new means
 		for i in range(k):
-         #find mean point of each cluster
-    		#reassign oldMeans before assigning new means
 			oldMeans[i] = means[i]
 			meanPoint = findClusterMean(clusters[i])
 			means[i] = meanPoint

@@ -45,20 +45,18 @@ def assignClusters(D, medoids):
 		
 	return clusters
 
-
 # Accepts a list of data points.
 # Returns the medoid of the points.
 def findClusterMedoid(cluster):
     minDistance = 100
     for point in cluster:
         for comparePoint in cluster:
-            
             if Distance(point, comparePoint) < minDistance:
                 minDistance = Distance(point,comparePoint)
                 medoid = point
                 
     return medoid
-    
+
 # Accepts a list of data points, and a number of clusters.
 # Produces a set of lists representing a K-Medoids clustering
 #  of D.
@@ -112,6 +110,19 @@ def main():
     myMedoids = KMedoids(points, 2)
     visualize(myMedoids)
     
+def visualize(clusters):
+	colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w']
+	i = 0
+	
+	#Assign different colors to each cluster
+	for cluster in clusters.values():
+		for point in cluster:	
+			plt.scatter(point[0], point[1], color=colors[i])
+		i+=1
+
+def main():
+    myMedoids = KMedoids(points, 2)
+    visualize(myMedoids)
     
 if __name__ == '__main__':
     main()

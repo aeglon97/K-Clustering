@@ -20,22 +20,18 @@ for i in range(sum(1 for line in open('../data/movehubjoin.csv'))):
         point = [X[i], Y[i]]
         points.append(point)   
 
-#draws dendogram visualization of all points
-def visualize(points):
-    #turn regular array into numPy array
-    numPyPoints = np.array(points)
-    #DENDOGRAM
-    linked = linkage(numPyPoints, 'single')
-    plt.figure(figsize=(10, 7)) 
-    dendrogram(linked,  
-                orientation='top',
-                #labels=labelList,
-                distance_sort='descending',
-                show_leaf_counts=True)
-    plt.xlabel('Purchase Power')
-    plt.ylabel('Cappuccino')
-    plt.savefig('../visualizations/hclust.png')
-    return plt
+#Purchase Power -- X-axis
+X = dataset.iloc[:,8]
+#Cappuccino 	   -- Y-axis
+Y = dataset.iloc[:,1]
+
+#Puts all datapoints in points[] array
+#Each x- and y-coordinate stored in an array [x, y]
+points = []
+for i in range(sum(1 for line in open('../data/movehubjoin.csv'))):
+	if (i < X.size) and (i < Y.size):
+		point = [X[i], Y[i]]
+		points.append(point)
 
 # Accepts two data points a and b.
 # Returns the distance between a and b.
@@ -99,6 +95,23 @@ def HClust(D):
     dendoGram = visualize(splits)
     return dendoGram
                
+#draws dendogram visualization of all points
+def visualize(points):
+    #turn regular array into numPy array
+    numPyPoints = np.array(points)
+    #DENDOGRAM
+    linked = linkage(numPyPoints, 'single')
+    plt.figure(figsize=(10, 7)) 
+    dendrogram(linked,  
+                orientation='top',
+                #labels=labelList,
+                distance_sort='descending',
+                show_leaf_counts=True)
+    plt.xlabel('Purchase Power')
+    plt.ylabel('Cappuccino')
+    plt.savefig('../visualizations/hclust.png')
+    return plt
+  
 def main():
     #create dendogram variable, then invoke matplotlib function show() on it
     myPlot = HClust(points)
